@@ -206,7 +206,7 @@ DML（数据库操作语言，它是对表记录的操作（增、删、改）�
    - SELECT IFNULL（comm，0）+ 1000 AS 奖金 FROM emp;
    - AS后面的为别名，AS也可以省略。
 
-##### 2.基础查询之条件查询
+##### 2.基础查询之查询
 
 ###### 1）条件查询（AND、IN、BETWEEN）
 
@@ -239,6 +239,71 @@ DML（数据库操作语言，它是对表记录的操作（增、删、改）�
 
      这个条件等同于不存在，可以查询出所有不为NULL的作者。
 
-- A
 
-- A
+##### 3.排序
+
+###### 1）升序
+
+-  SELECT * FROM bookpub ORDER BY 售价 ASC;
+  1. 按售价排序，升序
+  2. ASC可以省略
+
+###### 2）降序
+
+- SELECT * FROM bookpub ORDER BY 售价 DESC;
+  1. 按售价排序，降序
+  2. DESC不可以省略
+
+###### 3）使用多列作为排序条件
+
+- SELECT * FROM bookpub ORDER BY 售价 ASC, 出版日期 DESC;
+  1. 先按售价升序排序，售价相同的再按出版日期降序排序
+
+##### 4.聚合函数
+
+###### 1）COUNT
+
+- SELECT COUNT(*) FORM bookpub;
+  1. 计算表中所有列都不为NULL的个数
+- SELECT COUNT(书名) FORM bookpub;
+  1. 书名不为NULL的个数
+
+###### 2）MAX
+
+- SELECT MAX(售价) FROM bookpub;
+  1. 最高售价
+
+###### 3）MIN
+
+- SELECT MIN(售价) FROM bookpub;
+  1. 最低售价
+
+###### 4）SUM
+
+- SELECT SUM(售价) FROM bookpub;
+  1. 所有售价之和
+
+###### 5）AVG
+
+-  SELECT AVG(售价) FROM bookpub;
+  1. 平均售价
+
+##### 5.分组查询
+
+分组查询是把记录使用某一列进行分组，然后查询组信息。例如：查看所有部门的记录数。
+
+- SELECT deptno, COUNT(*) FROM emp GROUP BY deptno;
+  1. 使用deptno分组，查询部门编号和每个部门的记录数（记录数就是分组信息）
+- SELECT job, MAX(sal) FROM emp GROUP BY job;
+  1. 使用job分组，查询每种工作的最高工资（记录数就是分组信息）
+- SELECT deptno, COUNT(*) FROM emp GROUP BY deptno HAVING COUNT（*） > 3;
+  1. 使用部门分组，查询每种工作的记录数，条件为记录数大于3。
+
+##### 6.limit字句（方言）
+
+LIMIT用来限定查询结果的起始行，以及总行数。
+
+例如：查询起始行为第5行，一共查询3行记录
+
+- SELECT * FROM emp LIMIT 4,3;
+  1. 其中4表示从第5行开始，3表示一共查询3行，即第5，6，7行记录
