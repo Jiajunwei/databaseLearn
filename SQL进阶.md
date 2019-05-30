@@ -243,9 +243,52 @@
 ### 五、外键约束
 
 1. 外键必须是另一表（也可以是本身）的主键的值（外键要引用主键）
+
 2. 外键可以重复
+
 3. 外键可以为空
+
 4. 一张表中可以有多个外键
+
 5. 多方引用一方
+
 6. 对象模型：可以双向关联，而且引用的是对象
+
 7. 关系模型：多方引用一方，而且引用的只是主键，而不是一整行记录
+
+8. 实例：
+
+   ```mysql
+   --创建主表
+   CREATE TABLE [IF NOT EXISTS] dept ( 
+       deptno INT PRIMARY KEY AUTO_INCREMENT,
+       deptname VARCHAR ( 50 ) 
+   );
+   --插入数据
+   INSERT INTO dept [( deptno, deptname )] VALUES ( 10,'研发部'  );
+   INSERT INTO dept [( deptno, deptname )] VALUES ( 20,'人力部'  );
+   INSERT INTO dept [( deptno, deptname )] VALUES ( 30,'财务部'  );
+   INSERT INTO dept [( deptno, deptname )] VALUES ( 40, '销售部' );
+   
+   --创建分表，添加外键约束
+   CREATE TABLE [IF NOT EXISTS] emp (
+   		empno INT PRIMARY KEY AUTO_INCREMENT,
+   		ename VARCHAR ( 50 ),
+   		dno INT,
+   	CONSTRAINT fk_emp_dept FOREIGN KEY ( dno ) REFERENCES dept ( deptno ) 
+   	);
+   --插入数据
+   INSERT INTO emp (empno, ename) values (null, 'zhangsan') 	--没有插入dno，即外键为空
+   INSERT INTO emp (empno, ename, dno) values (null, 'lisi', 10) 
+   INSERT INTO emp (empno, ename, dno) values (null, 'wangwu', 10) --插入的dno与上一条一样，即外键可以重复
+   INSERT INTO emp (empno, ename, dno) values (null, 'wangwu', 80)--80在dept表的deptno列中不存在，所以会报错
+   
+   --修改添加外键约束
+   --假设emp没有外键约束
+   ALTER TABLE emp ADD CONSTRAINT fk_emp_dept FOREIGN KEY ( dno ) REFERENCES dept ( deptno );
+   
+   ```
+
+   
+
+9. 
