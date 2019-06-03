@@ -335,3 +335,44 @@ ADD CONSTRAINT fk_stu_tea_tid FOREIGN KEY(tid) REFERENCES teacher(tid),
 这时在stu_tea这个中间表中的每条记录都是来说明sutdent和teacher表的关系
 
 例如在stu_tea表中的记录，sid为1001，tid为2001，这说明编号为1001的学生有一个编号为2001的老师
+
+### 八.合并结果集
+
+1. 合并结果集
+   - 要求被合并的表中，列的类型和列数xiang't相同
+   - UNION，取出重复行
+   - UNION ALL，不去除重复行
+
+### 九. 连接查询
+
+1. 分类
+
+   - 内连接
+   - 外连接
+     - 左外连接
+     - 右外连接
+     - 全外连接（MySQL不支持）
+   - 自然连接（属于一种简化方式）
+
+2. 内连接
+
+   ```mysql
+   --方言：
+   SELECT * FROM 表1 别名1，表2 别名2 WHERE 别名1.xx=别名2.xx
+   ```
+
+   ```mysql
+   --标准：
+   SELECT * FROM 表1 别名1 INNER JOIN 表2 别名2 ON 别名1.xx=别名2.xx
+   ```
+
+   ```mysql
+   --自然：
+   SELECT * FROM 表1 别名1 NATURAL JOIN 表2 别名2
+   ```
+
+   
+
+3. 
+
+nei
