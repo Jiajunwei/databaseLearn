@@ -291,4 +291,47 @@
 
    
 
-9. 
+
+### 六、一对一关系
+
+在表中建立一对一关系比较特殊，需要让其中一张表的主键，既是主键又是外键。
+
+```mysql
+CREATE TABLE husband(
+hid int PRIMARY KEY AUTO_INCREMENT,
+...
+);
+CREATE TABLE wife(
+wid int PRIMARY KEY AUTO_INCREMENT,
+...
+ADD CONSTRAINT fk_wife_wid FOREIGN KEY(wid) REFERENCES husband(hid)
+)
+```
+
+其中wife表的wid既是主键，又是相对husband表的外键！husband.hid是主键，不能重复！wife.wid是主键不能重复，又是外键，必须来自husband.hid。所以如果在wife表中有一条记录的wid为1，那么wife表中的其他记录的wid就不能再是1了，同时在husband.hid中必须存在1这个值。
+
+### 七、多对多关系
+
+在表中建立多对多关系需要使用中间表，即需要三张表，在中间表使用两个外键，分别引用其他两个表的主键。
+
+```mysql
+CREATE TABLE student(
+sid INT PRIMARY KEY AUTO_INCREMENT,
+...
+);
+CREATE TABLE teacher(
+tid INT PRIMARY KEY AUTO_INCREMENT,
+...
+);
+CREATE TABLE stu_tea(
+sid INT,
+tid INT,      
+...
+ADD CONSTRAINT fk_stu_tea_sid FOREIGN KEY(sid) REFERENCES student(sid),
+ADD CONSTRAINT fk_stu_tea_tid FOREIGN KEY(tid) REFERENCES teacher(tid),    
+);
+```
+
+这时在stu_tea这个中间表中的每条记录都是来说明sutdent和teacher表的关系
+
+例如在stu_tea表中的记录，sid为1001，tid为2001，这说明编号为1001的学生有一个编号为2001的老师
