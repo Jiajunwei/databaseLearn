@@ -339,40 +339,123 @@ ADD CONSTRAINT fk_stu_tea_tid FOREIGN KEY(tid) REFERENCES teacher(tid),
 ### 八.合并结果集
 
 1. 合并结果集
-   - 要求被合并的表中，列的类型和列数xiang't相同
+   - 要求被合并的表中，列的类型和列数相同
    - UNION，取出重复行
    - UNION ALL，不去除重复行
 
 ### 九. 连接查询
 
-1. 分类
+##### 1、分类
 
-   - 内连接
-   - 外连接
-     - 左外连接
-     - 右外连接
-     - 全外连接（MySQL不支持）
-   - 自然连接（属于一种简化方式）
+- 内连接
+- 外连接
+  - 左外连接
+  - 右外连接
+  - 全外连接（MySQL不支持）
+- 自然连接（属于一种简化方式）
 
-2. 内连接
+##### 2、内连接
+
+```mysql
+--方言：
+SELECT * FROM 表1 别名1，表2 别名2 WHERE 别名1.xx=别名2.xx
+```
+
+```mysql
+--标准：
+SELECT * FROM 表1 别名1 INNER JOIN 表2 别名2 ON 别名1.xx=别名2.xx
+```
+
+```mysql
+--自然：
+SELECT * FROM 表1 别名1 NATURAL JOIN 表2 别名2
+```
+
+
+
+##### 3、外连接
+
+外连接有一主一次，左外即左表为主，哪个为主哪个全部保留，主表中不满足条件的记录，其次表部分为NULL。
+
+1. 左外：
 
    ```mysql
-   --方言：
-   SELECT * FROM 表1 别名1，表2 别名2 WHERE 别名1.xx=别名2.xx
+   SELECT * FROM 表1 别名1 LEFT OUTER JOIN 表2 别名2 ON 别名1.xx = 别名2.xx
    ```
 
-   ```mysql
-   --标准：
-   SELECT * FROM 表1 别名1 INNER JOIN 表2 别名2 ON 别名1.xx=别名2.xx
-   ```
+   左表记录全部保留，右表只有满足ON条件的才会查询出来。左表中不满足条件的记录，其右表部分为NULL。
+
+2. 左外自然：
 
    ```mysql
-   --自然：
-   SELECT * FROM 表1 别名1 NATURAL JOIN 表2 别名2
+   SELECT * FROM 表1 别名1 NATURAL LEFT OUTER JOIN 表2 别名2 ON 别名1.xx = 别名2.xx
    ```
 
    
 
-3. 
+3. 右外：
 
-nei
+   ```mysql
+   SELECT * FROM 表1 别名1 RIGHT OUTER JOIN 表2 别名2 ON 别名1.xx = 别名2.xx
+   ```
+
+   右表记录全部保留，左表只有满足ON条件的才会查询出来。右表中不满足条件的记录，其左表部分为NULL。
+
+4. 右外自然：
+
+   ```mysql
+   SELECT * FROM 表1 别名1 NATURAL RIGHT OUTER JOIN 表2 别名2 ON 别名1.xx = 别名2.xx
+   ```
+
+   
+
+5. 全连接
+
+   - 可以使用UNION来完成全连接
+
+     ```mysql
+     SELECT * FROM 表1 别名1 LEFT OUTER JOIN 表2 别名2 ON 别名1.xx = 别名2.xx
+     UNION
+     SELECT * FROM 表1 别名1 RIGHT OUTER JOIN 表2 别名2 ON 别名1.xx = 别名2.xx
+     ```
+
+     
+
+### 十.子查询
+
+一条语句中有多个SELECT关键字
+
+##### 1.单行单列
+
+```mysql
+SELECT * FROM 表1 别名1 WHERE 列1 [=、>、<、>=、<=、!=] (SELECT 列 FROM  表2 别名2 WHERE 条件)
+```
+
+
+
+##### 2.多行单列
+
+```mysql
+SELECT * FROM 表1 别名1 WHERE 列1 [IN、ALL、ANY] (SELECT 列 FROM  表2 别名2 WHERE 条件)
+```
+
+
+
+##### 3.单行多列
+
+```mysql
+SELECT * FROM 表1 别名1 WHERE （列1,列2） IN (SELECT 列1，列2 FROM  表2 别名2 WHERE 条件)
+```
+
+
+
+##### 4.多行多列
+
+```mysql
+SELECT * FROM 表名1 别名1，（SELECT ...）别名2 WHERE 条件
+```
+
+
+
+
+
