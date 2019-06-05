@@ -425,33 +425,51 @@ SELECT * FROM 表1 别名1 NATURAL JOIN 表2 别名2
 
 一条语句中有多个SELECT关键字
 
-##### 1.单行单列
+##### 1.出现的位置
+
+1. WHER后作为添加存在
+2. FROM后作为表存在（多行多列）
+
+##### 2.条件
+
+###### 1.子查询为单行单列
 
 ```mysql
+--子查询为单行单列常使用[=、>、<、>=、<=、!=]
 SELECT * FROM 表1 别名1 WHERE 列1 [=、>、<、>=、<=、!=] (SELECT 列 FROM  表2 别名2 WHERE 条件)
 ```
 
+```mysql
+--实例：查询公司工资最高的员工的所有信息
+SELECT * FROM emp WHERE sal = (SELECT MAX(sal) FROM emp)
+```
 
-
-##### 2.多行单列
+###### 2.子查询为多行单列
 
 ```mysql
 SELECT * FROM 表1 别名1 WHERE 列1 [IN、ALL、ANY] (SELECT 列 FROM  表2 别名2 WHERE 条件)
 ```
 
+```mysql
+--实例：大于30部门所有人工资的员工所有信息
+SELECT * FROM emp WHERE sal>ALL（ SELECT sal FROM emp WHERE deptno=30 ）
+```
 
-
-##### 3.单行多列
+###### 3.子查询为单行多列
 
 ```mysql
 SELECT * FROM 表1 别名1 WHERE （列1,列2） IN (SELECT 列1，列2 FROM  表2 别名2 WHERE 条件)
 ```
 
+```mysql
+--查找职位和部门都和张三一样的人的所有信息
+SELECT * FROM emp WHERE (job,deptno) IN (SELECT job, deptno FROM emp WHERE ename = '张三')
+```
 
-
-##### 4.多行多列
+###### 4.子查询为多行多列
 
 ```mysql
+--常用于FROM后，作为一张表
 SELECT * FROM 表名1 别名1，（SELECT ...）别名2 WHERE 条件
 ```
 
